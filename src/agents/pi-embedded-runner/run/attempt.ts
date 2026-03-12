@@ -1083,7 +1083,7 @@ export async function runEmbeddedAttempt(
         .then(() => true)
         .catch(() => false);
 
-      const transcriptPolicy = resolveTranscriptPolicy({
+      let transcriptPolicy = resolveTranscriptPolicy({
         modelApi: params.model?.api,
         provider: params.provider,
         modelId: params.modelId,
@@ -1298,6 +1298,13 @@ export async function runEmbeddedAttempt(
         });
         activeSession.agent.streamFn = cacheTrace.wrapStreamFn(activeSession.agent.streamFn);
       }
+
+      transcriptPolicy = resolveTranscriptPolicy({
+        modelApi: params.model?.api,
+        provider: params.provider,
+        modelId: params.modelId,
+        messages: activeSession.messages as Array<{ role: string; content?: unknown }>,
+      });
 
       // Copilot/Claude can reject persisted `thinking` blocks (e.g. thinkingSignature:"reasoning_text")
       // on *any* follow-up provider call (including tool continuations). Wrap the stream function

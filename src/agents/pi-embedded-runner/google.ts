@@ -535,6 +535,7 @@ export async function sanitizeSessionHistory(params: {
       modelApi: params.modelApi,
       provider: params.provider,
       modelId: params.modelId,
+      messages: params.messages,
     });
   const withInterSessionMarkers = annotateInterSessionUserMessages(params.messages);
   const sanitizedImages = await sanitizeSessionMessagesImages(
